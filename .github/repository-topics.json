@@ -1,0 +1,24 @@
+{
+  "names": [
+    "mlops",
+    "machine-learning",
+    "lstm",
+    "time-series",
+    "financial-forecasting",
+    "model-serving",
+    "model-registry",
+    "model-monitoring",
+    "data-drift",
+    "fastapi",
+    "tensorflow",
+    "keras",
+    "docker",
+    "docker-compose",
+    "mlflow",
+    "prometheus",
+    "grafana",
+    "python",
+    "reproducible-research",
+    "github-actions"
+  ]
+}

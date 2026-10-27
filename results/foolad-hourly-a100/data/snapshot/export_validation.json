@@ -1,0 +1,70 @@
+{
+  "raw_trade_aggregation_verified": true,
+  "raw_trade_files": 1025,
+  "raw_trade_cache_in_bundle": false,
+  "hourly_rows": 4273,
+  "downloaded_dates": 1025,
+  "unresolved_dates": 15,
+  "unresolved_errors": [
+    {
+      "date": "2023-05-01",
+      "error": "HTTPConnectionPool(host='service.tsetmc.com', port=80): Max retries exceeded with url: /tsev2/data/TseClient2.aspx?t=LastPossibleDeven (Caused by ConnectTimeoutError(<HTTPConnection(host='service.tsetmc.com', port=80) at 0x2913f05a4b0>, 'Connection to service.tsetmc.com timed out. (connect timeout=5)'))"
+    },
+    {
+      "date": "2023-11-01",
+      "error": "HTTPConnectionPool(host='service.tsetmc.com', port=80): Max retries exceeded with url: /tsev2/data/TseClient2.aspx?t=LastPossibleDeven (Caused by ConnectTimeoutError(<HTTPConnection(host='service.tsetmc.com', port=80) at 0x2913f39ec00>, 'Connection to service.tsetmc.com timed out. (connect timeout=5)'))"
+    },
+    {
+      "date": "2024-12-22",
+      "error": "No intraday trades returned"
+    },
+    {
+      "date": "2025-06-30",
+      "error": "No intraday trades returned"
+    },
+    {
+      "date": "2025-10-01",
+      "error": "No intraday trades returned"
+    },
+    {
+      "date": "2025-10-26",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913F03E810> on 2025-10-26 after 9 retries"
+    },
+    {
+      "date": "2025-10-27",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913F03EDE0> on 2025-10-27 after 9 retries"
+    },
+    {
+      "date": "2025-10-28",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913EC50710> on 2025-10-28 after 9 retries"
+    },
+    {
+      "date": "2025-10-29",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913F432210> on 2025-10-29 after 9 retries"
+    },
+    {
+      "date": "2025-11-01",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913F496CF0> on 2025-11-01 after 9 retries"
+    },
+    {
+      "date": "2025-11-02",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x00000291407B60F0> on 2025-11-02 after 9 retries"
+    },
+    {
+      "date": "2025-11-03",
+      "error": "HTTPConnectionPool(host='service.tsetmc.com', port=80): Max retries exceeded with url: /tsev2/data/TseClient2.aspx?t=LastPossibleDeven (Caused by ConnectTimeoutError(<HTTPConnection(host='service.tsetmc.com', port=80) at 0x2913f2f2d50>, 'Connection to service.tsetmc.com timed out. (connect timeout=5)'))"
+    },
+    {
+      "date": "2025-11-04",
+      "error": "Failed to fetch trade details for <pytse_client.ticker.ticker.Ticker object at 0x000002913F03E1B0> on 2025-11-04 after 9 retries"
+    },
+    {
+      "date": "2025-12-28",
+      "error": "No intraday trades returned"
+    },
+    {
+      "date": "2025-12-29",
+      "error": "No intraday trades returned"
+    }
+  ]
+}

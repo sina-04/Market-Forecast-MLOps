@@ -1,0 +1,78 @@
+rule_files:
+  - alerts.yml
+evaluation_interval: 15s
+tests:
+  - interval: 15s
+    input_series:
+      - series: 'up{job="forecast",instance="api:8000"}'
+        values: '0+0x8'
+    alert_rule_test:
+      - eval_time: 2m
+        alertname: ForecastUnavailable
+        exp_alerts:
+          - exp_labels:
+              job: forecast
+              instance: api:8000
+              severity: critical
+            exp_annotations:
+              summary: Historical replay API unavailable
+  - interval: 15s
+    input_series:
+      - series: 'forecast_feature_psi{feature="return_1"}'
+        values: '0.5+0x8'
+      - series: 'forecast_replay_samples'
+        values: '100+0x8'
+      - series: 'forecast_replay_error{model="lstm",metric="RMSE"}'
+        values: '20+0x8'
+      - series: 'forecast_replay_error{model="persistence",metric="RMSE"}'
+        values: '10+0x8'
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: HistoricalFeatureDrift
+        exp_alerts:
+          - exp_labels:
+              feature: return_1
+            exp_annotations:
+              summary: Historical replay feature PSI exceeds 0.2; review required
+      - eval_time: 1m
+        alertname: HistoricalQualityReview
+        exp_alerts:
+          - exp_labels:
+              metric: RMSE
+            exp_annotations:
+              summary: Historical replay RMSE exceeds 1.2 times persistence
+  - interval: 15s
+    input_series:
+      - series: 'forecast_feature_psi{feature="return_1"}'
+        values: '0.5+0x8'
+      - series: 'forecast_replay_samples'
+        values: '99+0x8'
+    alert_rule_test:
+      - eval_time: 1m
+        alertname: HistoricalFeatureDrift
+        exp_alerts: []
+  - interval: 15s
+    input_series:
+      - series: 'forecast_requests_total{route="/v1/predict",status="200"}'
+        values: '0+18x60'
+      - series: 'forecast_requests_total{route="/v1/predict",status="500"}'
+        values: '0+2x60'
+      - series: 'forecast_request_duration_seconds_bucket{route="/v1/predict",le="0.5"}'
+        values: '0+0x60'
+      - series: 'forecast_request_duration_seconds_bucket{route="/v1/predict",le="1"}'
+        values: '0+20x60'
+      - series: 'forecast_request_duration_seconds_bucket{route="/v1/predict",le="+Inf"}'
+        values: '0+20x60'
+    alert_rule_test:
+      - eval_time: 8m
+        alertname: ForecastErrors
+        exp_alerts:
+          - exp_labels: {}
+            exp_annotations:
+              summary: Prediction errors exceed 1 percent
+      - eval_time: 8m
+        alertname: ForecastSlow
+        exp_alerts:
+          - exp_labels: {}
+            exp_annotations:
+              summary: Prediction p95 latency exceeds 500 ms

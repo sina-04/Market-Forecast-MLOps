@@ -1,0 +1,11 @@
+# Frozen artifacts and hashed Python sources must retain their exact bytes.
+results/** -text
+src/** -text
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.lock text eol=lf
+Dockerfile text eol=lf
+.dockerignore text eol=lf
+.gitignore text eol=lf

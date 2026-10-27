@@ -1,0 +1,15 @@
+{
+  "status": "complete",
+  "saved_model_reload_verified": true,
+  "test_targets": 535,
+  "selected": {
+    "name": "lstm_60_32",
+    "length": 60,
+    "units": 32,
+    "MAE": 20.174543670924542,
+    "MSE": 853.2296850823798,
+    "RMSE": 29.210095602075317,
+    "MAPE": 0.8086794613604115,
+    "samples": 533
+  }
+}

@@ -1,0 +1,28 @@
+groups:
+  - name: forecast
+    rules:
+      - alert: ForecastUnavailable
+        expr: up{job="forecast"} == 0 or forecast_ready == 0
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: Historical replay API unavailable
+      - alert: ForecastErrors
+        expr: (sum(increase(forecast_requests_total{route="/v1/predict",status=~"5.."}[5m])) / sum(increase(forecast_requests_total{route="/v1/predict"}[5m])) > 0.01) and (sum(increase(forecast_requests_total{route="/v1/predict"}[5m])) >= 100)
+        for: 5m
+        annotations:
+          summary: Prediction errors exceed 1 percent
+      - alert: ForecastSlow
+        expr: (histogram_quantile(0.95, sum by (le) (rate(forecast_request_duration_seconds_bucket{route="/v1/predict"}[5m]))) > 0.5) and (sum(increase(forecast_requests_total{route="/v1/predict"}[5m])) >= 100)
+        for: 5m
+        annotations:
+          summary: Prediction p95 latency exceeds 500 ms
+      - alert: HistoricalQualityReview
+        expr: (forecast_replay_error{model="lstm",metric="RMSE"} > ignoring(model) 1.2 * forecast_replay_error{model="persistence",metric="RMSE"}) and on() (forecast_replay_samples >= 100)
+        annotations:
+          summary: Historical replay RMSE exceeds 1.2 times persistence
+      - alert: HistoricalFeatureDrift
+        expr: (forecast_feature_psi > 0.2) and on() (forecast_replay_samples >= 100)
+        annotations:
+          summary: Historical replay feature PSI exceeds 0.2; review required

@@ -1,0 +1,40 @@
+{
+  "verified_at_utc": "2026-10-05T20:46:37.859163+00:00",
+  "original_archive_sha256": "49ce3896a9c1008e35c8f91ab6ebc6c076c4b9b8357b77b1c85e12ce779403d1",
+  "original_files_verified": 77,
+  "training_source_hashes_verified": true,
+  "snapshot_integrity_verified": true,
+  "sequence_splits_reproduced": {
+    "train": 2490,
+    "validation": 533,
+    "test": 535
+  },
+  "all_four_exported_metrics_reproduced": true,
+  "selected_model_reload": {
+    "verified": true,
+    "predictions": 535
+  },
+  "model_formats_reloaded": [
+    "model.keras",
+    "model.h5",
+    "ohlcv_model.keras",
+    "ridge.joblib"
+  ],
+  "prediction_tolerance": {
+    "rtol": 1e-06,
+    "atol_adjusted_rials": 0.001
+  },
+  "ohlcv_cpu_tolerance_adjusted_rials": 0.01,
+  "ohlcv_max_absolute_prediction_difference": 0.009377002716064453,
+  "ridge_max_absolute_prediction_difference": 0.00032448768615722656,
+  "local_environment": {
+    "python": "3.12.10",
+    "tensorflow": "2.19.1",
+    "keras": "3.13.2",
+    "devices": [
+      "/physical_device:CPU:0"
+    ]
+  },
+  "training_environment": "Original Colab A100 environment retained in training-results/hourly-forecast/environment.json",
+  "no_retraining_or_model_selection_performed": true
+}

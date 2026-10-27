@@ -1,0 +1,30 @@
+{
+  "symbol": "فولاد",
+  "company_contains": "فولادمبارکه",
+  "years": 5,
+  "frequency": "hourly",
+  "timezone": "Asia/Tehran",
+  "timezone_basis": "Naive exchange-local timestamps from exporter; no timezone conversion",
+  "target": "next observed traded hourly bar adjusted last price",
+  "price_column": "adj_hourly_last_price",
+  "start_date": "2021-10-02 09:00:00",
+  "end_date": "2026-09-30 12:00:00",
+  "instrument_ids": [
+    "46348559193224090"
+  ],
+  "source": "User pytse-client hourly bars aggregated from returned trades",
+  "retrieved_at_utc": "Not recorded by exporter",
+  "imported_at_utc": "2026-10-05T19:59:31.870597+00:00",
+  "completion_policy": "Completed dates only; next observed bar may follow an overnight/weekend gap",
+  "adjustment_policy": "Daily next-session previous official close / official close, applied uniformly within each day; retrospective",
+  "checksums": {
+    "adjustment_basis.csv": "0086dd1d5b85ec8bd48ccba022227345e574a41a595f83c14227457b08d3bdc1",
+    "coverage.csv": "d211ac72acad4bdc6cfe8c1bee40a11e1babf673a7a028be02ada639c45ee811",
+    "export_validation.json": "645e67a8ff874c61e761afd54ef4858206ca9d2806ab512037cab3c5d7501e8d",
+    "raw.csv": "0af5f5d931a916bf684598ed4e488d8c776edcdf2775cc31981bcb45697d8f72",
+    "raw_trade_checksums.json": "d4ccdd2eaa74399b49ad95359ca1b92315babcdcb3e7e16dcafe71c2c9004410",
+    "source_daily.csv": "a5669c44ca767bb2feb76a93ff6ffa452db5c1a0673355c13afae044e1b91c83",
+    "source_export_script.py": "12e093c59aa8827d664f16eda2467d93f715c2df103d7ea9b6d4356b8abe9cfe",
+    "source_hourly.csv": "d3bad6c2e16eebca2ad3cf3d3b12e2fab5bcea98cc702cd5ec369179fa2e4e46"
+  }
+}

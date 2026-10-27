@@ -1,0 +1,21 @@
+{
+  "uid": "forecast-replay",
+  "title": "Hourly LSTM — Historical Replay",
+  "description": "Frozen retrospectively adjusted data. Historical diagnostics, not live market performance.",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "time": {"from": "now-30m", "to": "now"},
+  "tags": ["historical-replay"],
+  "panels": [
+    {"id": 1, "title": "API readiness", "type": "stat", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 0, "y": 0, "w": 12, "h": 7}, "targets": [{"expr": "forecast_ready", "refId": "A", "instant": true}]},
+    {"id": 2, "title": "Distinct historical replay targets (100 required)", "type": "stat", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 12, "y": 0, "w": 12, "h": 7}, "targets": [{"expr": "forecast_replay_samples", "refId": "A", "instant": true}]},
+    {"id": 3, "title": "Prediction requests / second", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 0, "y": 7, "w": 12, "h": 8}, "targets": [{"expr": "sum(rate(forecast_requests_total{route=\"/v1/predict\"}[5m]))", "refId": "A"}]},
+    {"id": 4, "title": "Prediction p95 latency (seconds)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 12, "y": 7, "w": 12, "h": 8}, "targets": [{"expr": "histogram_quantile(0.95, sum by (le) (rate(forecast_request_duration_seconds_bucket{route=\"/v1/predict\"}[5m])))", "refId": "A"}]},
+    {"id": 5, "title": "Historical replay MAE / RMSE (adjusted rials) / MAPE (%)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 0, "y": 15, "w": 12, "h": 8}, "targets": [{"expr": "forecast_replay_error", "refId": "A", "legendFormat": "{{model}} {{metric}}"}]},
+    {"id": 6, "title": "Historical feature PSI — review above 0.2", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 12, "y": 15, "w": 12, "h": 8}, "targets": [{"expr": "forecast_feature_psi", "refId": "A", "legendFormat": "{{feature}}"}]},
+    {"id": 7, "title": "API resident memory (bytes)", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 0, "y": 23, "w": 12, "h": 8}, "targets": [{"expr": "process_resident_memory_bytes", "refId": "A"}]},
+    {"id": 8, "title": "API CPU seconds / second", "type": "timeseries", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 12, "y": 23, "w": 12, "h": 8}, "targets": [{"expr": "rate(process_cpu_seconds_total[5m])", "refId": "A"}]},
+    {"id": 9, "title": "Active service and historical replay alerts", "type": "table", "datasource": {"type": "prometheus", "uid": "prometheus"}, "gridPos": {"x": 0, "y": 31, "w": 24, "h": 8}, "targets": [{"expr": "ALERTS{alertstate=\"firing\"}", "refId": "A", "instant": true, "format": "table"}]}
+  ]
+}

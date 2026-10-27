@@ -1,0 +1,22 @@
+{
+  "symbol": "فولاد",
+  "company_contains": "فولادمبارکه",
+  "years": 5,
+  "frequency": "hourly",
+  "target_mode": "log_return",
+  "required_gpu": "A100",
+  "sequence_lengths": [12, 24, 60],
+  "lstm_units": [32, 64],
+  "default_sequence_length": 24,
+  "dropout": 0.2,
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "epochs": 100,
+  "patience": 12,
+  "seed": 42,
+  "train_fraction": 0.70,
+  "validation_fraction": 0.15,
+  "ridge_alphas": [0.1, 1.0, 10.0],
+  "request_timeout": 15,
+  "request_attempts": 3
+}

@@ -1,0 +1,22 @@
+{
+  "verified_at_utc": "2026-10-26T23:21:39.376969+00:00",
+  "release_id": "96af9d84b05046bacc19ab6c67d09125023e58f9c50c4bf8cb6ca95a85766251",
+  "registry_version": "4",
+  "mode": "historical_replay",
+  "http_parity": {
+    "predictions": 535,
+    "max_absolute_difference": 0.0028946399688720703,
+    "rtol": 1e-06,
+    "atol_adjusted_rials": 0.001
+  },
+  "load": {
+    "requests": 300,
+    "rate_per_second": 5,
+    "duration_seconds": 60,
+    "concurrency_limit": 5,
+    "unexpected_errors": 0,
+    "p95_seconds": 0.0944417999999132,
+    "container_peak_bytes": 605765632.0
+  },
+  "accepted": true
+}

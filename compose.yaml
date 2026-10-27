@@ -1,0 +1,119 @@
+name: marketforecast
+
+x-app: &app
+  image: ${MARKETFORECAST_IMAGE:-marketforecast-service:local}
+  build:
+    context: .
+    target: production
+  init: true
+  logging:
+    driver: local
+    options:
+      max-size: 10m
+      max-file: "3"
+
+services:
+  mlflow:
+    <<: *app
+    command: [mlflow, server, --backend-store-uri, "sqlite:////state/mlflow.db", --artifacts-destination, /state/artifacts, --serve-artifacts, --host, "0.0.0.0", --port, "5000", --workers, "1", --allowed-hosts, "mlflow:5000,localhost:5000,127.0.0.1:5000"]
+    ports: ["127.0.0.1:5000:5000"]
+    volumes: ["mlflow_data:/state"]
+    restart: unless-stopped
+    mem_limit: 2g
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:5000/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  register:
+    <<: *app
+    profiles: [tools]
+    command: [marketforecast-service, register, --promote]
+    environment:
+      MLFLOW_TRACKING_URI: http://mlflow:5000
+      MLFLOW_ENABLE_ARTIFACTS_PROGRESS_BAR: "false"
+    volumes: ["registry_data:/registry"]
+    depends_on:
+      mlflow:
+        condition: service_healthy
+
+  api:
+    <<: *app
+    environment:
+      MARKETFORECAST_API_KEY: ${MARKETFORECAST_API_KEY:?Run deploy/setup.ps1 or deploy/setup.py first}
+    ports: ["127.0.0.1:8000:8000"]
+    volumes: ["audit_data:/state", "registry_data:/registry:ro"]
+    restart: unless-stopped
+    cpus: 2
+    mem_limit: 2g
+    stop_grace_period: 40s
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=128m"]
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8000/health/ready')"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  prometheus:
+    image: prom/prometheus@sha256:fa3302279710be2f21a8301ec17a8b4f2301fd829bd113839b3b6b02b6f191a2
+    ports: ["127.0.0.1:9090:9090"]
+    volumes:
+      - ./deploy/prometheus:/etc/prometheus:ro
+      - prometheus_data:/prometheus
+    command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.retention.time=15d]
+    restart: unless-stopped
+    mem_limit: 512m
+    logging:
+      driver: local
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, promtool, check, ready, --url=http://localhost:9090]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+
+  grafana:
+    image: grafana/grafana@sha256:dbbc38ea21103cefb50396340cd88afec779c7e070b0a7bf5a75b4ce46651d3f
+    ports: ["127.0.0.1:3000:3000"]
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Run deploy/setup.ps1 or deploy/setup.py first}
+      GF_AUTH_ANONYMOUS_ENABLED: "false"
+      GF_USERS_ALLOW_SIGN_UP: "false"
+      GF_ANALYTICS_REPORTING_ENABLED: "false"
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./deploy/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./deploy/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    restart: unless-stopped
+    mem_limit: 512m
+    logging:
+      driver: local
+    depends_on:
+      prometheus:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, wget, --quiet, --spider, http://localhost:3000/api/health]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+  backup:
+    <<: *app
+    profiles: [tools]
+    command: [marketforecast-service, backup, --output, /backups/manual]
+    volumes: ["audit_data:/state", "mlflow_data:/mlflow:ro", "registry_data:/registry:ro", "backup_data:/backups"]
+
+volumes:
+  mlflow_data:
+  registry_data:
+  audit_data:
+  prometheus_data:
+  grafana_data:
+  backup_data:

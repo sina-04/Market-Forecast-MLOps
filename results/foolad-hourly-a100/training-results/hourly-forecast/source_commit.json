@@ -1,0 +1,5 @@
+{
+  "commit": "aff06f4786e84885c1fd20f04ab6030aa25e54f4",
+  "working_tree_changes_included": true,
+  "source_basis": "Exact local source files in checksum-protected input bundle; commit alone is insufficient"
+}

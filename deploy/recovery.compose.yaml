@@ -1,0 +1,20 @@
+# Use with: docker compose -p marketforecast-recovery -f compose.yaml -f deploy/recovery.compose.yaml ...
+# !override is supported by the verified Docker Compose v5 installation.
+services:
+  api:
+    ports: !override ["127.0.0.1:8001:8000"]
+  mlflow:
+    ports: !override ["127.0.0.1:5001:5000"]
+  prometheus:
+    ports: !override ["127.0.0.1:9091:9090"]
+  grafana:
+    ports: !override ["127.0.0.1:3001:3000"]
+  restore:
+    image: ${MARKETFORECAST_IMAGE:-marketforecast-service:local}
+    profiles: [tools]
+    command: [marketforecast-service, restore, --input, /backups/acceptance]
+    volumes:
+      - audit_data:/state
+      - mlflow_data:/mlflow
+      - registry_data:/registry
+      - ./deploy/local/backups:/backups:ro

@@ -1,0 +1,14 @@
+{
+  "verified_at_utc": "2026-10-26T23:28:22.435013+00:00",
+  "release_id": "96af9d84b05046bacc19ab6c67d09125023e58f9c50c4bf8cb6ca95a85766251",
+  "registry_version": "4",
+  "restart_persisted_records": 1405,
+  "registry_offline_inference": true,
+  "registration_idempotent": true,
+  "restored_records": 1406,
+  "restored_prediction_and_registry": true,
+  "prometheus_target_up": true,
+  "alert_rules": 5,
+  "grafana_panels": 9,
+  "accepted": true
+}
